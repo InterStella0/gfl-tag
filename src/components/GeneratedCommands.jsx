@@ -41,7 +41,7 @@ const GeneratedCommands = ({
             title={debugMode ? 'Switch to Unicode mode' : 'Switch to Debug mode'}
           >
             {debugMode ? <Bug className="w-4 h-4" /> : <Code className="w-4 h-4" />}
-            <span>{debugMode ? 'Debug' : 'Unicode'}</span>
+            <span>{debugMode ? 'Unicode' : 'Debug'}</span>
           </button>
         </div>
         <button
