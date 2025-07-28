@@ -23,7 +23,7 @@ export const colors = [
   {name: 'Dark Blue', code: 'e', color: '#5C66C7FF', unicode: '\x0c', rawUnicode: '\\u000c', friendly: '{darkblue}'},
   {name: 'Dark Red', code: 'f', color: '#D60403FF', unicode: '\x02', rawUnicode: '\\u0002', friendly: '{darkred}'},
   {name: 'Light Red', code: 'g', color: '#B85043FF', unicode: '\x0f', rawUnicode: '\\u000f', friendly: '{lightred}'},
-  {name: 'Gold', code: 'h', color: '#E5B064FF', unicode: '\x10', rawUnicode: '\\U00000010', friendly: '{gold}'},
+  {name: 'Gold', code: 'h', color: '#E5B064FF', unicode: '\x10', rawUnicode: '\\u0010', friendly: '{gold}'},
   {name: 'Grey', code: 'i', color: '#CFC8C0FF', unicode: '\x08', rawUnicode: '\\u0008', friendly: '{grey}'},
   {name: 'Lime', code: 'j', color: '#ACE779FF', unicode: '\x06', rawUnicode: '\\u0006', friendly: '{lime}'},
   {name: 'Orchid', code: 'k', color: '#B54BBAFF', unicode: '\x0e', rawUnicode: '\\u000e', friendly: '{orchid}'},
