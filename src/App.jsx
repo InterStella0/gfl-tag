@@ -12,6 +12,13 @@ import { getColorMapping } from './colorConstants';
 import { getCurrentSelection, getCaretPosition } from './tagTextUtils';
 import { colors } from './colorConstants';
 
+
+const commandTypes = {
+  chat: { settag: '/settag', tagcolor: '/tagcolor', namecolor: '/namecolor' },
+  console: { settag: 'c_settag', tagcolor: 'c_tagcolor', namecolor: 'c_namecolor' },
+  none: { settag: '', tagcolor: '', namecolor: '' }
+};
+
 const App = () => {
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -20,8 +27,8 @@ const App = () => {
     return false;
   });
   const [copied, setCopied] = useState(false);
-  const [debugMode, setDebugMode] = useState(false); // Unicode mode is default, debug mode shows [a][b][c]
-  
+  const [displayMode, setDisplayMode] = useState("unicode");
+  const [commandType, setCommandType] = useState('chat'); 
   // Tag state
   const [tagBaseColor, setTagBaseColor] = useState(null);
   const [tagText, setTagText] = useState('');
@@ -156,50 +163,65 @@ const App = () => {
     return parts;
   };
 
-  // Generate commands
-  const generateTagColorCommand = useCallback(() => {
-    if (!tagBaseColor) return '';
-    return `/tagcolor ${tagBaseColor.code}`;
-  }, [tagBaseColor]);
+const generateTagColorCommand = useCallback(() => {
+  if (!tagBaseColor) return '';
+  const prefix = commandTypes[commandType].tagcolor;
+  return prefix ? `${prefix} ${tagBaseColor.code}` : tagBaseColor.code;
+}, [tagBaseColor, commandType]);
 
-  const generateSetTagCommand = useCallback(() => {
-    if (!tagText.trim()) return '';
-    
-    let result = '';
-    let lastEnd = 0;
-    const baseColorCode = getBaseColorUnicode();
+const generateNameColorCommand = useCallback(() => {
+  if (!nameColor || !nameText.trim()) return '';
+  const prefix = commandTypes[commandType].namecolor;
+  return prefix ? `${prefix} ${nameColor.code}` : nameColor.code;
+}, [nameColor, nameText, commandType]);
 
-    const sortedSegments = [...tagSegments].sort((a, b) => a.start - b.start);
+const generateSetTagCommand = useCallback(() => {
+  if (!tagText.trim()) return '';
+  
+  let result = '';
+  let lastEnd = 0;
+  const baseColorCode = getBaseColorUnicode();
 
-    sortedSegments.forEach(segment => {
-      if (segment.start > lastEnd) {
-        const unstyledText = tagText.slice(lastEnd, segment.start);
-        result += unstyledText;
-      }
+  const sortedSegments = [...tagSegments].sort((a, b) => a.start - b.start);
 
-      const segmentText = tagText.slice(segment.start, segment.end);
-      const colorCode = debugMode ? `[${segment.color.code}]` : segment.color.unicode;
-      result += `${colorCode}${segmentText}`;
-      
-      if (segment.end < tagText.length && baseColorCode) {
-        const resetCode = debugMode ? `[${baseColorCode}]` : colors.find(c => c.code === baseColorCode)?.unicode || '';
-        result += resetCode;
-      }
+  const getColorCode = (color) => {
+    switch(displayMode) {
+      case 'unicode': return color.unicode;
+      case 'rawUnicode': return color.rawUnicode;
+      case 'debug': return `[${color.code}]`;
+      case 'friendly': return color.friendly;
+      default: return color.unicode;
+    }
+  };
 
-      lastEnd = segment.end;
-    });
-
-    if (lastEnd < tagText.length) {
-      result += tagText.slice(lastEnd);
+  sortedSegments.forEach(segment => {
+    if (segment.start > lastEnd) {
+      const unstyledText = tagText.slice(lastEnd, segment.start);
+      result += unstyledText;
     }
 
-    return `/settag ${result}`;
-  }, [tagText, tagSegments, tagBaseColor, debugMode]);
+    const segmentText = tagText.slice(segment.start, segment.end);
+    const colorCode = getColorCode(segment.color);
+    result += `${colorCode}${segmentText}`;
+    
+    if (segment.end < tagText.length && baseColorCode) {
+      const resetColor = colors.find(c => c.code === baseColorCode);
+      if (resetColor) {
+        const resetCode = getColorCode(resetColor);
+        result += resetCode;
+      }
+    }
 
-  const generateNameColorCommand = useCallback(() => {
-    if (!nameColor || !nameText.trim()) return '';
-    return `/namecolor ${nameColor.code}`;
-  }, [nameColor, nameText]);
+    lastEnd = segment.end;
+  });
+
+  if (lastEnd < tagText.length) {
+    result += tagText.slice(lastEnd);
+  }
+
+  const prefix = commandTypes[commandType].settag;
+  return prefix ? `${prefix} ${result}` : result;
+}, [tagText, tagSegments, tagBaseColor, displayMode, commandType]);
 
   const copyCommands = async () => {
     const commands = [];
@@ -299,8 +321,10 @@ const App = () => {
           generateNameColorCommand={generateNameColorCommand}
           tagBaseColor={tagBaseColor}
           nameColor={nameColor}
-          debugMode={debugMode}
-          setDebugMode={setDebugMode}
+          displayMode={displayMode}
+          setDisplayMode={setDisplayMode}
+          commandType={commandType}
+          setCommandType={setCommandType}
         />
       </div>
     </div>

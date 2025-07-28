@@ -16,19 +16,19 @@ export const otherColors = [
 ];
 
 export const colors = [
-  {name: 'White', code: 'a', color: '#FFFFFF', unicode: ''},
-  {name: 'Green', code: 'b', color: '#4FC83DFF', unicode: ''},
-  {name: 'Light Green', code: 'c', color: '#CEE698FF', unicode: ''},
-  {name: 'Blue', code: 'd', color: '#758FCCFF', unicode: ''},
-  {name: 'Dark Blue', code: 'e', color: '#5C66C7FF', unicode: ''},
-  {name: 'Dark Red', code: 'f', color: '#D60403FF', unicode: ''},
-  {name: 'Light Red', code: 'g', color: '#B85043FF', unicode: ''},
-  {name: 'Gold', code: 'h', color: '#E5B064FF', unicode: ''},
-  {name: 'Grey', code: 'i', color: '#CFC8C0FF', unicode: ''},
-  {name: 'Lime', code: 'j', color: '#ACE779FF', unicode: ''},
-  {name: 'Orchid', code: 'k', color: '#B54BBAFF', unicode: ''},
-  {name: 'Yellow', code: 'l', color: '#E1E495FF', unicode: '   '},
-  {name: 'Palered', code: 'm', color: '#D5494CFF', unicode: ''},
+  {name: 'White', code: 'a', color: '#FFFFFF', unicode: '\x01', rawUnicode: '\\u0001', friendly: '{white}'},
+  {name: 'Green', code: 'b', color: '#4FC83DFF', unicode: '\x04', rawUnicode: '\\u0004', friendly: '{green}'},
+  {name: 'Light Green', code: 'c', color: '#CEE698FF', unicode: '\x05', rawUnicode: '\\u0005', friendly: '{lightgreen}'},
+  {name: 'Blue', code: 'd', color: '#758FCCFF', unicode: '\x0b', rawUnicode: '\\u000b', friendly: '{blue}'},
+  {name: 'Dark Blue', code: 'e', color: '#5C66C7FF', unicode: '\x0c', rawUnicode: '\\u000c', friendly: '{darkblue}'},
+  {name: 'Dark Red', code: 'f', color: '#D60403FF', unicode: '\x02', rawUnicode: '\\u0002', friendly: '{darkred}'},
+  {name: 'Light Red', code: 'g', color: '#B85043FF', unicode: '\x0f', rawUnicode: '\\u000f', friendly: '{lightred}'},
+  {name: 'Gold', code: 'h', color: '#E5B064FF', unicode: '\x10', rawUnicode: '\\U00000010', friendly: '{gold}'},
+  {name: 'Grey', code: 'i', color: '#CFC8C0FF', unicode: '\x08', rawUnicode: '\\u0008', friendly: '{grey}'},
+  {name: 'Lime', code: 'j', color: '#ACE779FF', unicode: '\x06', rawUnicode: '\\u0006', friendly: '{lime}'},
+  {name: 'Orchid', code: 'k', color: '#B54BBAFF', unicode: '\x0e', rawUnicode: '\\u000e', friendly: '{orchid}'},
+  {name: 'Yellow', code: 'l', color: '#E1E495FF', unicode: '\x09', rawUnicode: '\\u0009', friendly: '{yellow}'},
+  {name: 'Palered', code: 'm', color: '#D5494CFF', unicode: '\x07', rawUnicode: '\\u0007', friendly: '{palered}'},
 ];
 
 export const getColorMapping = (otherColor) => {

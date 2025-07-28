@@ -11,13 +11,31 @@ const GeneratedCommands = ({
   generateNameColorCommand,
   tagBaseColor,
   nameColor,
-  debugMode,
-  setDebugMode
+  displayMode,
+  setDisplayMode,
+  commandType,
+  setCommandType
 }) => {
   const hasContent = tagText.trim() || nameText.trim();
 
   if (!hasContent) return null;
+  const modes = [
+    { key: 'unicode', label: 'Unicode', icon: Code },
+    { key: 'rawUnicode', label: 'Raw Unicode', icon: Code },
+    { key: 'debug', label: 'Debug', icon: Bug },
+    { key: 'friendly', label: 'Friendly', icon: Code }
+  ];
+  const commandTypes = [
+    { key: 'chat', label: 'Chat' },
+    { key: 'console', label: 'Console' },
+    { key: 'none', label: 'Raw' }
+  ];
+  
+  const currentCommandType = commandTypes.find(t => t.key === commandType);
+  const nextCommandType = commandTypes[(commandTypes.findIndex(t => t.key === commandType) + 1) % commandTypes.length];
 
+const currentModeIndex = modes.findIndex(mode => mode.key === displayMode);
+const nextMode = modes[(currentModeIndex + 1) % modes.length];
   return (
     <div className={`rounded-2xl p-6 backdrop-blur-sm border ${
       darkMode 
@@ -27,22 +45,32 @@ const GeneratedCommands = ({
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-3">
           <h3 className="text-lg font-semibold">Generated Commands</h3>
+          
+          <div className="flex gap-2">
           <button
-            onClick={() => setDebugMode(!debugMode)}
+            onClick={() => setDisplayMode(nextMode.key)}
             className={`flex items-center gap-2 px-3 py-1 text-sm rounded-lg transition-colors ${
-              debugMode
-                ? darkMode
-                  ? 'bg-orange-600/80 text-white'
-                  : 'bg-orange-500/90 text-white'
-                : darkMode
+              darkMode
                 ? 'bg-gray-700 hover:bg-gray-600 text-gray-300'
                 : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
             }`}
-            title={debugMode ? 'Switch to Unicode mode' : 'Switch to Debug mode'}
+            title={`Switch to ${nextMode.label} mode`}
           >
-            {!debugMode ? <Bug className="w-4 h-4" /> : <Code className="w-4 h-4" />}
-            <span>{debugMode ? 'Unicode' : 'Debug'}</span>
+            <nextMode.icon className="w-4 h-4" />
+            <span>{modes.find(m => m.key === displayMode)?.label}</span>
           </button>
+          <button
+            onClick={() => setCommandType(nextCommandType.key)}
+            className={`flex items-center gap-2 px-3 py-1 text-sm rounded-lg transition-colors ${
+              darkMode
+                ? 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+            }`}
+            title={`Switch to ${nextCommandType.label} commands`}
+          >
+            <span>{currentCommandType?.label}</span>
+          </button>
+          </div>
         </div>
         <button
           onClick={copyCommands}
